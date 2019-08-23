@@ -1,0 +1,207 @@
+"""Book data"""
+type Book implements Node {
+  """The ID of an object"""
+  id: ID!
+  _id: String
+  title: String
+  description: String
+  price: Int
+  stars: Int
+  author: String
+  image: String
+  purchaseUrl: String
+  likedByUser: Boolean
+  pages: String
+}
+
+input BookAddInput {
+  """book name"""
+  title: String!
+
+  """book description"""
+  description: String
+  image: String
+  price: Int!
+  stars: Int
+  author: String
+  purchaseUrl: String!
+  pages: String!
+  clientMutationId: String
+}
+
+type BookAddPayload {
+  message: String
+  error: String
+  book: Book
+  clientMutationId: String
+}
+
+"""A connection to a list of items."""
+type BookConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [BookEdge]
+  count: Int
+}
+
+"""An edge in a connection."""
+type BookEdge {
+  """The item at the end of the edge"""
+  node: Book
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input BookEditInput {
+  """book ID"""
+  id: ID!
+
+  """book name"""
+  title: String!
+
+  """book description"""
+  description: String
+  image: String
+  purchaseUrl: String!
+  price: Int!
+  stars: Int
+  author: String
+  pages: String!
+  clientMutationId: String
+}
+
+type BookEditPayload {
+  message: String
+  error: String
+  book: Book
+  clientMutationId: String
+}
+
+input ChangePasswordInput {
+  oldPassword: String!
+
+  """user new password"""
+  password: String!
+  clientMutationId: String
+}
+
+type ChangePasswordPayload {
+  error: String
+  me: User
+  clientMutationId: String
+}
+
+input LoginEmailInput {
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+type LoginEmailPayload {
+  token: String
+  error: String
+  clientMutationId: String
+}
+
+type Mutation {
+  LoginEmail(input: LoginEmailInput!): LoginEmailPayload
+  RegisterEmail(input: RegisterEmailInput!): RegisterEmailPayload
+  ChangePassword(input: ChangePasswordInput!): ChangePasswordPayload
+  BookAdd(input: BookAddInput!): BookAddPayload
+  UserLikeBook(input: UserLikeBookInput!): UserLikeBookPayload
+  BookEdit(input: BookEditInput!): BookEditPayload
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""The root of all... queries"""
+type Query {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+  me: User
+  user(id: ID!): User
+  book(id: ID!): Book
+  users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
+  books(after: String, first: Int, before: String, last: Int, search: String): BookConnection
+}
+
+input RegisterEmailInput {
+  name: String!
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+type RegisterEmailPayload {
+  token: String
+  error: String
+  clientMutationId: String
+}
+
+"""User data"""
+type User implements Node {
+  """The ID of an object"""
+  id: ID!
+  _id: String
+  name: String
+  email: String
+  likes: [String]
+  active: Boolean
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]
+  count: Int
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge"""
+  node: User
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input UserLikeBookInput {
+  """book"""
+  book: String
+  clientMutationId: String
+}
+
+type UserLikeBookPayload {
+  message: String
+  error: String
+  user: User
+  clientMutationId: String
+}
