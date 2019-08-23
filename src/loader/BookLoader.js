@@ -81,8 +81,8 @@ export const loadBooks = async (context: GraphQLContext, args: ConnectionArgumen
 		conditions = {
 			...conditions,
 			title: {
-				$regex: new RegExp(`${args.search}`, 'ig'),
-			},
+				$regex: new RegExp(`${args.search}`, 'ig')
+			}
 		};
 	}
 
@@ -92,7 +92,7 @@ export const loadBooks = async (context: GraphQLContext, args: ConnectionArgumen
 		cursor: books,
 		context,
 		args,
-		loader: load,
+		loader: load
 	});
 };
 
@@ -101,14 +101,12 @@ export const loadLikedBooks = async (context: GraphQLContext, args: ConnectionAr
 
 	if (!user) throw new Error('user not provided');
 
-	const userInstance = await UserModel.findById(user._id);
-
-	const books = BookModel.find({ _id: { $in: userInstance.likes } }).sort({ _id: -1 });
+	const books = BookModel.find({ _id: { $in: user.likes } }).sort({ _id: -1 });
 
 	return connectionFromMongoCursor({
 		cursor: books,
 		context,
 		args,
-		loader: load,
+		loader: load
 	});
 };
