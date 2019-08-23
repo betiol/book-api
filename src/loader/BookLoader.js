@@ -95,3 +95,20 @@ export const loadBooks = async (context: GraphQLContext, args: ConnectionArgumen
 		loader: load,
 	});
 };
+
+export const loadLikedBooks = async (context: GraphQLContext, args: ConnectionArguments) => {
+	const { user } = context;
+
+	if (!user) throw new Error('user not provided');
+
+	const userInstance = await UserModel.findById(user._id);
+
+	const books = BookModel.find({ _id: { $in: userInstance.likes } }).sort({ _id: -1 });
+
+	return connectionFromMongoCursor({
+		cursor: books,
+		context,
+		args,
+		loader: load,
+	});
+};

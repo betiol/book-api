@@ -85,5 +85,16 @@ export default new GraphQLObjectType({
 			resolve: (obj: BookPayload, args: ConectionArguments, context: GraphQLContext) =>
 				BookLoader.loadBooks(context, args),
 		},
+		loadLikedBooks: {
+			type: BookConnection.connectionType,
+			args: {
+				...connectionArgs,
+				search: {
+					type: GraphQLString,
+				},
+			},
+			resolve: (obj: BookPayload, args: ConectionArguments, context: GraphQLContext) =>
+				BookLoader.loadLikedBooks(context, args),
+		},
 	}),
 });

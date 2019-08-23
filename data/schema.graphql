@@ -148,6 +148,7 @@ type Query {
   book(id: ID!): Book
   users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
   books(after: String, first: Int, before: String, last: Int, search: String): BookConnection
+  loadLikedBooks(after: String, first: Int, before: String, last: Int, search: String): BookConnection
 }
 
 input RegisterEmailInput {
