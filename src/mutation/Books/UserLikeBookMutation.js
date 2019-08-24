@@ -2,11 +2,11 @@ import { GraphQLString } from 'graphql';
 
 import { mutationWithClientMutationId } from 'graphql-relay';
 
-import { User } from '../../model';
+import { User, Book } from '../../model';
 import type { BookType as BType } from '../../loader/BookLoader';
 import type { GraphQLContext } from '../../TypeDefinition';
 import UserType from '../../type/UserType';
-import mongoose from 'mongoose';
+import BookType from '../../type/BookType';
 
 type Output = {
 	message: string,
@@ -31,6 +31,8 @@ export default mutationWithClientMutationId({
 		//check if the book is on list of the liked books
 		const isOnLikedBooks = await findUser.likes.includes(args.book);
 
+		const book = await Book.findOne({ _id: args.book });
+
 		if (isOnLikedBooks) {
 			const removeBook = findUser.likes.filter((x) => x.toString() !== args.book);
 			const updateLiked = await User.updateOne(
@@ -41,6 +43,7 @@ export default mutationWithClientMutationId({
 				message: 'Added to favorites',
 				error: null,
 				user: updateLiked,
+				book,
 			};
 		}
 
@@ -52,6 +55,7 @@ export default mutationWithClientMutationId({
 			message: 'Added to favorites',
 			error: null,
 			user: findUser,
+			book,
 		};
 	},
 	outputFields: {
@@ -66,6 +70,10 @@ export default mutationWithClientMutationId({
 		user: {
 			type: UserType,
 			resolve: ({ user }) => user,
+		},
+		book: {
+			type: BookType,
+			resolve: ({ book }) => book,
 		},
 	},
 });

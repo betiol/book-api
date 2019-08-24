@@ -81,8 +81,8 @@ export const loadBooks = async (context: GraphQLContext, args: ConnectionArgumen
 		conditions = {
 			...conditions,
 			title: {
-				$regex: new RegExp(`${args.search}`, 'ig')
-			}
+				$regex: new RegExp(`${args.search}`, 'ig'),
+			},
 		};
 	}
 
@@ -92,7 +92,7 @@ export const loadBooks = async (context: GraphQLContext, args: ConnectionArgumen
 		cursor: books,
 		context,
 		args,
-		loader: load
+		loader: load,
 	});
 };
 
@@ -107,6 +107,6 @@ export const loadLikedBooks = async (context: GraphQLContext, args: ConnectionAr
 		cursor: books,
 		context,
 		args,
-		loader: load
+		loader: load,
 	});
 };
