@@ -103,6 +103,7 @@ input LoginEmailInput {
 type LoginEmailPayload {
   token: String
   error: String
+  user: User
   clientMutationId: String
 }
 
@@ -161,6 +162,7 @@ input RegisterEmailInput {
 type RegisterEmailPayload {
   token: String
   error: String
+  user: User
   clientMutationId: String
 }
 

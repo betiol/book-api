@@ -60,7 +60,7 @@ export const load = async (context: GraphQLContext, id: string): Promise<?Book> 
 	try {
 		data = await context.dataloaders.BookLoader.load(id);
 	} catch (err) {
-		return null;
+		return err;
 	}
 	return viewerCanSee(context, data) ? new Book(data, context) : null;
 };
@@ -69,12 +69,6 @@ export const clearCache = ({ dataloaders }: GraphQLContext, id: string) =>
 	dataloaders.BookLoader.clear(id.toString());
 
 export const loadBooks = async (context: GraphQLContext, args: ConnectionArguments) => {
-	const { user } = context;
-
-	// if (!user) {
-	// 	throw new Error('invalid user');
-	// }
-
 	let conditions = {};
 
 	if (args.search) {

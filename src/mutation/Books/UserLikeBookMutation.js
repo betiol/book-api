@@ -18,8 +18,8 @@ export default mutationWithClientMutationId({
 	inputFields: {
 		book: {
 			type: GraphQLString,
-			description: 'book',
-		},
+			description: 'book'
+		}
 	},
 	mutateAndGetPayload: async (args: BType, context: GraphQLContext) => {
 		const { user } = context;
@@ -32,18 +32,19 @@ export default mutationWithClientMutationId({
 		const isOnLikedBooks = await findUser.likes.includes(args.book);
 
 		const book = await Book.findOne({ _id: args.book });
+		console.log(args.book);
 
 		if (isOnLikedBooks) {
 			const removeBook = findUser.likes.filter((x) => x.toString() !== args.book);
-			const updateLiked = await User.updateOne(
+			const updateLikes = await User.updateOne(
 				{ _id: user._id },
 				{ $set: { likes: removeBook || [] } }
 			);
 			return {
 				message: 'Added to favorites',
 				error: null,
-				user: updateLiked,
-				book,
+				user: updateLikes,
+				book
 			};
 		}
 
@@ -55,25 +56,25 @@ export default mutationWithClientMutationId({
 			message: 'Added to favorites',
 			error: null,
 			user: findUser,
-			book,
+			book
 		};
 	},
 	outputFields: {
 		message: {
 			type: GraphQLString,
-			resolve: ({ message }: Output) => message,
+			resolve: ({ message }: Output) => message
 		},
 		error: {
 			type: GraphQLString,
-			resolve: ({ error }: Output) => error,
+			resolve: ({ error }: Output) => error
 		},
 		user: {
 			type: UserType,
-			resolve: ({ user }) => user,
+			resolve: ({ user }) => user
 		},
 		book: {
 			type: BookType,
-			resolve: ({ book }) => book,
-		},
-	},
+			resolve: ({ book }) => book
+		}
+	}
 });
