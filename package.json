@@ -1,6 +1,6 @@
 {
 	"name": "api",
-	"description": "GraphQL DataLoader boilerplate",
+	"description": "Books API",
 	"version": "0.0.1",
 	"dependencies": {
 		"@entria/graphql-mongoose-loader": "^1.1.1",
@@ -59,22 +59,14 @@
 	},
 	"jest": {
 		"testEnvironment": "node",
-		"testPathIgnorePatterns": [
-			"/node_modules/",
-			"./dist"
-		],
-		"coverageReporters": [
-			"lcov",
-			"html"
-		],
+		"testPathIgnorePatterns": [ "/node_modules/", "./dist" ],
+		"coverageReporters": [ "lcov", "html" ],
 		"coverageDirectory": "./coverage/",
 		"collectCoverage": true,
 		"moduleNameMapper": {
 			"^mongoose$": "<rootDir>/node_modules/mongoose"
 		},
-		"setupFiles": [
-			"babel-polyfill"
-		]
+		"setupFiles": [ "babel-polyfill" ]
 	},
 	"license": "MIT",
 	"main": "index.js",
@@ -93,7 +85,6 @@
 		"start": "yarn build && node dist/index.js",
 		"test": "jest --coverage --forceExit --runInBand",
 		"test:watch": "NODE_ENV=test && jest --watch --coverage",
-		"deploy": "git push heroku master",
 		"copy-to-project": "babel-node ./scripts/copySchemaToProject.js",
 		"update-schema": "babel-node ./scripts/updateSchema.js && npm run copy-to-project",
 		"graphql": "nodemon src/index.js --exec babel-node",
