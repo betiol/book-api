@@ -51,28 +51,23 @@ export const bookAddValidationSchema = yup.object().shape({
   title: yup
     .string(TITLE_NOT_LONG_ENOUGH)
     .min(3)
-    .max(255)
     .required(REQUIRED_TITLE),
   description: yup
     .string(DESCRIPTION_NOT_LONG_ENOUGH)
     .min(3)
-    .max(255)
     .required(REQUIRED_DESCRIPTION),
   author: yup
     .string(AUTHOR_NOT_LONG_ENOUGH)
     .min(3)
-    .max(255)
     .required(REQUIRED_AUTHOR),
   image: yup
     .string(IMAGE_NOT_LONG_ENOUGH)
     .min(3)
-    .max(255)
     .required(REQUIRED_IMAGE),
   price: yup.string().required(REQUIRED_PRICE),
   pages: yup.string().required(REQUIRED_PAGES),
   purchaseUrl: yup
     .string(PURCHASE_URL_NOT_LONG_ENOUGH)
     .min(3)
-    .max(255)
     .required(REQUIRED_PURCHASE_URL),
 });
