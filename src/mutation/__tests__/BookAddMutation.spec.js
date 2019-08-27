@@ -2,6 +2,7 @@ import { graphql } from 'graphql';
 import { schema } from '../../schema';
 import { User, Book } from '../../model';
 import { getContext, setupTest } from '../../../test/helper';
+import { USER_NOT_VALID } from '../../utils/errorMessages';
 
 describe('Book Add Mutation', () => {
   beforeEach(() => setupTest());
@@ -31,7 +32,9 @@ describe('Book Add Mutation', () => {
           purchaseUrl: "http://amazon.com",
         }) {
           clientMutationId
-          error
+          error {
+            message
+          }
         }
       }
     `;
@@ -40,10 +43,10 @@ describe('Book Add Mutation', () => {
     const context = getContext();
 
     const result = await graphql(schema, query, rootValue, context);
-    const { errors } = result;
+    const { BookAdd } = result.data;
 
-    expect(errors.length).toBe(1);
-    expect(errors[0].message).toBe('invalid user');
+    expect(BookAdd.error.length).toBe(1);
+    expect(BookAdd.error[0].message).toBe(USER_NOT_VALID);
   });
 
   it('should create an book by BookAdd mutation', async () => {

@@ -1,11 +1,15 @@
-import { GraphQLString, GraphQLNonNull, GraphQLInt } from 'graphql';
+import { GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLList } from 'graphql';
 
 import { mutationWithClientMutationId } from 'graphql-relay';
 
 import { Book } from '../../model';
 import BookType from '../../type/BookType';
+import ErrorType from '../../type/ErrorType';
 import type { BookType as BType } from '../../loader/BookLoader';
 import type { GraphQLContext } from '../../TypeDefinition';
+import { bookAddValidationSchema } from '../../utils/schemaValidations';
+import { USER_NOT_VALID } from '../../utils/errorMessages';
+import { formatYupError } from '../../utils/formatYupError';
 
 type Output = {
   message: string,
@@ -43,17 +47,22 @@ export default mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async (args: BType, context: GraphQLContext) => {
+    try {
+      await bookAddValidationSchema.validate(args, { abortEarly: false });
+    } catch (error) {
+      return {
+        error: formatYupError(error),
+      };
+    }
     const { user } = context;
+
     if (!user) {
-      throw new Error('invalid user');
+      return {
+        error: [{ path: 'user', message: USER_NOT_VALID }],
+      };
     }
 
-    // @TODO improve validation logic
-    // Create new record
-
-    const data = new Book({
-      ...args,
-    });
+    const data = new Book({ ...args });
 
     const book = await data.save();
 
@@ -69,7 +78,7 @@ export default mutationWithClientMutationId({
       resolve: ({ message }: Output) => message,
     },
     error: {
-      type: GraphQLString,
+      type: GraphQLList(ErrorType),
       resolve: ({ error }: Output) => error,
     },
     book: {

@@ -11,7 +11,5 @@ export const formatYupError = (err: ValidationError) => {
     });
   });
 
-  console.log('errors', errors);
-
   return errors;
 };
