@@ -80,6 +80,12 @@ type BookEditPayload {
   clientMutationId: String
 }
 
+"""Error Type"""
+type Error {
+  path: String
+  message: String
+}
+
 input LoginEmailInput {
   email: String!
   password: String!
@@ -88,7 +94,7 @@ input LoginEmailInput {
 
 type LoginEmailPayload {
   token: String
-  error: String
+  error: [Error]
   user: User
   clientMutationId: String
 }
@@ -146,7 +152,7 @@ input RegisterEmailInput {
 
 type RegisterEmailPayload {
   token: String
-  error: String
+  error: [Error]
   user: User
   clientMutationId: String
 }

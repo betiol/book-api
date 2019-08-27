@@ -29,7 +29,8 @@
 		"koa-router": "^7.4.0",
 		"mongoose": "^5.0.8",
 		"rimraf": "^2.6.2",
-		"subscriptions-transport-ws": "^0.9.6"
+		"subscriptions-transport-ws": "^0.9.6",
+		"yup": "^0.27.0"
 	},
 	"devDependencies": {
 		"babel-cli": "^6.26.0",
@@ -58,14 +59,22 @@
 	},
 	"jest": {
 		"testEnvironment": "node",
-		"testPathIgnorePatterns": [ "/node_modules/", "./dist" ],
-		"coverageReporters": [ "lcov", "html" ],
+		"testPathIgnorePatterns": [
+			"/node_modules/",
+			"./dist"
+		],
+		"coverageReporters": [
+			"lcov",
+			"html"
+		],
 		"coverageDirectory": "./coverage/",
 		"collectCoverage": true,
 		"moduleNameMapper": {
 			"^mongoose$": "<rootDir>/node_modules/mongoose"
 		},
-		"setupFiles": [ "babel-polyfill" ]
+		"setupFiles": [
+			"babel-polyfill"
+		]
 	},
 	"license": "MIT",
 	"main": "index.js",

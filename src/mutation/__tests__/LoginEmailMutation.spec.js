@@ -3,6 +3,7 @@ import { schema } from '../../schema';
 import { User } from '../../model';
 import { generateToken } from '../../auth';
 import { getContext, setupTest } from '../../../test/helper';
+import { INVALID_EMAIL_PASSWORD, USER_NOT_EXISTS } from '../../utils/errorMessages';
 
 beforeEach(() => setupTest());
 
@@ -11,13 +12,14 @@ it('should not login if email is not in the database', async () => {
   const query = `
     mutation M {
       LoginEmail(input: {
-        clientMutationId: "abc"
         email: "awesome@example.com"
         password: "awesome"
       }) {
-        clientMutationId
         token
-        error
+        error {
+          path
+          message
+        }
       }     
     }
   `;
@@ -27,9 +29,8 @@ it('should not login if email is not in the database', async () => {
 
   const result = await graphql(schema, query, rootValue, context);
   const { LoginEmail } = result.data;
-
   expect(LoginEmail.token).toBe(null);
-  expect(LoginEmail.error).toBe('Invalid email or password');
+  expect(LoginEmail.error[0].message).toBe(USER_NOT_EXISTS);
 });
 
 it('should not login with wrong email', async () => {
@@ -50,7 +51,9 @@ it('should not login with wrong email', async () => {
       }) {
         clientMutationId
         token
-        error
+        error {
+          message
+        }
       }     
     }
   `;
@@ -62,7 +65,7 @@ it('should not login with wrong email', async () => {
   const { LoginEmail } = result.data;
 
   expect(LoginEmail.token).toBe(null);
-  expect(LoginEmail.error).toBe('Invalid email or password');
+  expect(LoginEmail.error[0].message).toBe(INVALID_EMAIL_PASSWORD);
 });
 
 it('should generate token when email and password is correct', async () => {
@@ -86,7 +89,9 @@ it('should generate token when email and password is correct', async () => {
       }) {
         clientMutationId
         token
-        error
+        error {
+          message
+        }
       }     
     }
   `;

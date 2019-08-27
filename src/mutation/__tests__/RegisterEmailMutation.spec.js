@@ -3,6 +3,7 @@ import { schema } from '../../schema';
 import { User } from '../../model';
 import { generateToken } from '../../auth';
 import { getContext, setupTest } from '../../../test/helper';
+import { EMAIL_ALREADY_EXISTS } from '../../utils/errorMessages';
 
 beforeEach(() => setupTest());
 
@@ -28,7 +29,9 @@ it('should not register with the an existing email', async () => {
       }) {
         clientMutationId
         token
-        error
+        error {
+          message
+        }
       }     
     }
   `;
@@ -40,7 +43,7 @@ it('should not register with the an existing email', async () => {
   const { RegisterEmail } = result.data;
 
   expect(RegisterEmail.token).toBe(null);
-  expect(RegisterEmail.error).toBe('The email is already in use');
+  expect(RegisterEmail.error[0].message).toBe(EMAIL_ALREADY_EXISTS);
 });
 
 it('should create a new user with parameters are valid', async () => {
@@ -57,7 +60,9 @@ it('should create a new user with parameters are valid', async () => {
       }) {
         clientMutationId
         token
-        error
+        error {
+          message
+        }
       }     
     }
   `;
