@@ -80,20 +80,6 @@ type BookEditPayload {
   clientMutationId: String
 }
 
-input ChangePasswordInput {
-  oldPassword: String!
-
-  """user new password"""
-  password: String!
-  clientMutationId: String
-}
-
-type ChangePasswordPayload {
-  error: String
-  me: User
-  clientMutationId: String
-}
-
 input LoginEmailInput {
   email: String!
   password: String!
@@ -110,7 +96,6 @@ type LoginEmailPayload {
 type Mutation {
   LoginEmail(input: LoginEmailInput!): LoginEmailPayload
   RegisterEmail(input: RegisterEmailInput!): RegisterEmailPayload
-  ChangePassword(input: ChangePasswordInput!): ChangePasswordPayload
   BookAdd(input: BookAddInput!): BookAddPayload
   UserLikeBook(input: UserLikeBookInput!): UserLikeBookPayload
   BookEdit(input: BookEditInput!): BookEditPayload
