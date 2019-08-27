@@ -31,3 +31,6 @@ coverage
 flow-coverage
 
 .reify-cache/
+
+.env
+.env.dev
